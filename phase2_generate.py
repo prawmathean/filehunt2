@@ -41,9 +41,9 @@ from brainfuck_interpreter import run_brainfuck
 # TUNABLE CONSTANTS — Phase 2 defaults are ~3-4× larger than Phase 1
 # ---------------------------------------------------------------------------
 OUTPUT_DIR      = "phase2_output"   # Directory for all generated outputs
-NUM_FOLDERS     = 150               # Decoy folders in the tree (~4× Phase 1)
-MAX_DEPTH       = 5                 # Max folder nesting depth
-NUM_NOISE_FILES = 450               # Decoy junk files (~4× Phase 1)
+NUM_FOLDERS     = 512               # Decoy folders in the tree (~4× Phase 1)
+MAX_DEPTH       = 16             # Max folder nesting depth
+NUM_NOISE_FILES = 4500               # Decoy junk files (~4× Phase 1)
 MIN_FILE_SIZE   = 512               # bytes — minimum decoy payload
 MAX_FILE_SIZE   = 8192              # bytes — maximum decoy payload
 NUM_HAYSTACK    = 3000              # Total oracle_* files in the haystack
@@ -53,13 +53,17 @@ SEED            = None              # Set to an integer for reproducible output
 # Wordlists for decoy naming  (identical lists required by spec)
 # ---------------------------------------------------------------------------
 LIST1 = [
-    "skibidi", "rizz", "gyat", "sigma", "ohio", "fanum", "sus", "goofy",
-    "cringe", "based", "npc", "alpha", "beta", "chad", "karen", "boomer",
+    "sixSeven", "gyat", "coy", "booby", "fanum", "sus", "goofy",
+    "nineElvn", "based", "npc", "alpha", "beta", "karen", "boomer",
     "zoomer", "yeet", "bruh", "cap", "bussin", "drip", "simp", "cope",
     "seethe", "malding", "mid", "peak", "goated", "ratio", "copium",
     "hopium", "doomer", "bloomer", "gremlin", "feral", "unc", "aura",
     "delulu", "mewing", "glazing", "slay", "no-cap", "lowkey", "highkey",
-    "sheesh", "sussy", "pog", "poggers", "vibe",
+    "sheesh", "sussy", "pog", "poggers", "vibe","mr_poopy-butthole", "poop", "black", "horny" , "oyas" , "rijo",
+    "sigma", "skibidi", "rizz", "cooked", "locked-in", "edging", 
+    "looksmaxxing", "yapping", "blud", "cringe", "fam", "schizo", 
+    "pick-me", "trad", "woke", "opp", "banger", "slaps", "valid", 
+    "tweaking", "zesty", "mogged", "yikes", "clutch"
 ]
 
 LIST2 = [
@@ -68,8 +72,12 @@ LIST2 = [
     "spongebob", "shrek", "gigachad", "wojak", "pepe", "doge", "stonks",
     "virgin", "rizzler", "toilet", "tax", "goon", "cave", "elmo", "shark",
     "duck", "goblin", "wizard", "banana", "chair", "lettuce", "sandwich",
-    "grimace", "florida", "moth", "capybara", "dorito", "katana", "glizzy",
-    "hamster", "waffle", "pickle", "nugget", "brainrot", "void", "swamp",
+    "grimace", "florida", "moth", "capybara", "dorito", "glizzy", "mogger", "horny ",
+    "hamster", "waffle", "pickle", "nugget", "brainrot", "void", "swamp", "gooners", "alzheimers", "ragebaits", "clickbait", "fr", 
+    "grindset", "schizoposting", "backrooms", "cheems", "floppa", "bingus", 
+    "donkey", "twitter", "instagram", "tumblr", "linux", "debian", 
+    "kernel", "python", "javascript", "css", "html", "potato", 
+    "toaster", "giga", "soup", "bean", "gigachadette"
 ]
 
 EXTENSIONS = [

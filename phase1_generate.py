@@ -34,9 +34,9 @@ import tempfile
 # TUNABLE CONSTANTS — edit these to change the haystack size
 # ---------------------------------------------------------------------------
 OUTPUT_DIR      = "phase1_output"   # Directory that will contain all generated outputs
-NUM_FOLDERS     = 40                # How many decoy folders to create in the tree
-MAX_DEPTH       = 4                 # Maximum nesting depth for the folder tree
-NUM_NOISE_FILES = 120               # How many decoy (junk) files to scatter
+NUM_FOLDERS     = 256                # How many decoy folders to create in the tree
+MAX_DEPTH       = 8                 # Maximum nesting depth for the folder tree
+NUM_NOISE_FILES = 1024               # How many decoy (junk) files to scatter
 MIN_FILE_SIZE   = 256               # bytes — minimum decoy file payload
 MAX_FILE_SIZE   = 2048              # bytes — maximum decoy file payload
 SEED            = None              # Set to an integer for reproducible output; None = random
@@ -45,13 +45,13 @@ SEED            = None              # Set to an integer for reproducible output;
 # Wordlists for decoy naming
 # ---------------------------------------------------------------------------
 LIST1 = [
-    "skibidi", "rizz", "gyat", "sigma", "ohio", "fanum", "sus", "goofy",
-    "cringe", "based", "npc", "alpha", "beta", "chad", "karen", "boomer",
+    "sixSeven", "gyat", "coy", "booby", "fanum", "sus", "goofy",
+    "nineElvn", "based", "npc", "alpha", "beta", "karen", "boomer",
     "zoomer", "yeet", "bruh", "cap", "bussin", "drip", "simp", "cope",
     "seethe", "malding", "mid", "peak", "goated", "ratio", "copium",
     "hopium", "doomer", "bloomer", "gremlin", "feral", "unc", "aura",
     "delulu", "mewing", "glazing", "slay", "no-cap", "lowkey", "highkey",
-    "sheesh", "sussy", "pog", "poggers", "vibe",
+    "sheesh", "sussy", "pog", "poggers", "vibe","mr_poopy-butthole", "poop", "black", "horny" , "oyas" , "rijo"
 ]
 
 LIST2 = [
@@ -60,8 +60,8 @@ LIST2 = [
     "spongebob", "shrek", "gigachad", "wojak", "pepe", "doge", "stonks",
     "virgin", "rizzler", "toilet", "tax", "goon", "cave", "elmo", "shark",
     "duck", "goblin", "wizard", "banana", "chair", "lettuce", "sandwich",
-    "grimace", "florida", "moth", "capybara", "dorito", "katana", "glizzy",
-    "hamster", "waffle", "pickle", "nugget", "brainrot", "void", "swamp",
+    "grimace", "florida", "moth", "capybara", "dorito", "katana", "glizzy", "mogger", "horny "
+    "hamster", "waffle", "pickle", "nugget", "brainrot", "void", "swamp", "gooners", "alzheimers", "ragebaits", "clickbait", "fr", 
 ]
 
 # Decoy file extensions (rotate randomly)
