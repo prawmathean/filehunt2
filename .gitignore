@@ -1,0 +1,50 @@
+# =============================================================
+# Generated output — never commit these
+# =============================================================
+
+# Phase 1 generator output (participant pack, zip, admin log)
+phase1_output/
+
+# Phase 2 generator output (participant pack, zip, admin log)
+phase2_output/
+
+# Any standalone haystack test runs
+*_files/
+
+# Distributable zips (in case someone runs zip manually)
+*.zip
+
+# Admin answer logs (safety net — must never be committed)
+admin_answer_log.txt
+
+# =============================================================
+# Python
+# =============================================================
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# =============================================================
+# OS / editor noise
+# =============================================================
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+*.swo
+*~
+.idea/
+.vscode/
+*.iml

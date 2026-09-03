@@ -241,25 +241,16 @@ def main():
     word       = sys.argv[2]
     num_decoys = int(sys.argv[3])
 
+    # Single call: use a plain real_content; the index is shown in the puzzle text.
     result = generate_haystack(
-        base_dir   = out_dir,
-        word       = word,
-        num_decoys = num_decoys,
-        real_content = (
-            "This is the real file! "
-            f"You found oracle_{str(result_placeholder := 0)} — "
-            "but this is just a CLI test run.\n"
+        base_dir          = out_dir,
+        word              = word,
+        num_decoys        = num_decoys,
+        real_content      = (
+            f"This is the REAL file — CLI test run, not an event pack.\n"
+            f"Real index will be shown below.\n"
         ),
-    )
-    # Rerun now that we have the real index for a cleaner test message:
-    result = generate_haystack(
-        base_dir   = out_dir,
-        word       = word,
-        num_decoys = num_decoys,
-        real_content = (
-            f"This is the REAL file (index {result['real_index']}).\n"
-            "CLI test run — not an event pack.\n"
-        ),
+        index_puzzle_type = "math",
     )
 
     print(f"Haystack created at : {result['folder']}")
