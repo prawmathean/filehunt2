@@ -1,0 +1,11 @@
+# Exclude things Docker doesn't need to COPY
+.git/
+.gitignore
+setup.sh
+README.md
+phase1_output/admin_answer_log.txt
+phase2_output/admin_answer_log.txt
+phase1_output/filehunt_phase1.zip
+phase2_output/filehunt_phase2.zip
+*.tar.gz
+__pycache__/
