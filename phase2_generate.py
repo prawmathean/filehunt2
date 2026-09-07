@@ -321,7 +321,11 @@ def main():
     # ----------------------------------------------------------------
     # STAGE 1 — START_HERE — double-cycle cipher (ROT13 → base64)
     # ----------------------------------------------------------------
-    s1_plain  = "the next file is named cipher"
+    s1_plain  = (
+        "I am the art of disguising a message so only the intended recipient can read it. "
+        "Caesar shifted letters. Enigma spun rotors. HTTPS uses me every time you open a browser. "
+        "What am I? (Your answer is the name of your next file.)"
+    )
     s1_rot13  = rot13(s1_plain)
     s1_b64    = base64.b64encode(s1_rot13.encode()).decode()
 
@@ -356,7 +360,12 @@ def main():
     # STAGE 2 — cipher — Caesar, unknown shift
     # ----------------------------------------------------------------
     shift       = rng.randint(1, 25)
-    s2_plain    = "the next file is named breach"
+    s2_plain    = (
+        "I am every security team's worst headline. "
+        "When I happen, millions of records — passwords, emails, credit cards — leak to the public. "
+        "One misconfigured server is all it takes. What am I? "
+        "(Your answer is the name of your next file.)"
+    )
     s2_cipher   = caesar_shift(s2_plain, shift)
     s2_text     = (
         "HINT: Caesar cipher (same family as what you did previously).\n"
@@ -386,8 +395,11 @@ def main():
     s3_answer  = "exploit"
     s3_encoded = alpha_position_encode(s3_answer)
     s3_text    = (
-        "Decode the number sequence below.\n"
-        "A=1, B=2, C=3, ... Z=26.  Numbers separated by hyphens.\n"
+        "Hackers write this to weaponise a vulnerability.\n"
+        "Pen-testers write this to prove a system can be broken into.\n"
+        "What is the word? Decode the number sequence below to find it.\n"
+        "(A=1, B=2, C=3, ... Z=26.  Numbers separated by hyphens.)\n"
+        "The decoded word is also the name of your next file.\n"
         "\n"
         f"{s3_encoded}\n"
     )
@@ -424,7 +436,10 @@ def compute_total(n):
 result = compute_total(10)
 
 if result == 55:
-    print("the next file is named payload")
+    print("In a missile, I am the warhead.")
+    print("In malware, I am the part that does the actual damage —")
+    print("the ransomware that encrypts your files, the keylogger that steals your passwords.")
+    print("What am I? (Your answer is the name of your next file.)")
 '''
     s4_folder = rng.choice(folders)
     s4_path   = os.path.join(s4_folder, "exploit.py")
@@ -438,7 +453,7 @@ if result == 55:
         f"  Clue file    : exploit.py  (plain Python — no fake header)\n"
         f"  Full path    : {os.path.relpath(s4_path, abs_output)}\n"
         f"  Bug          : range(1, n) should be range(1, n+1)\n"
-        f"  Expected out : the next file is named payload\n"
+        f"  Expected out : [riddle — answer = payload]\n"
         f"  Decoys       : {[os.path.relpath(p, abs_output) for p in decoys4]}\n"
         f"  Answer       : payload\n"
         f"  Next file    : payload  (any extension)"
@@ -455,7 +470,12 @@ if result == 55:
     # Fallback: if exiftool is unavailable at generation time, the clue
     # text is appended after the JPEG EOI marker so `strings` still finds it.
     # ----------------------------------------------------------------
-    s5_clue   = "the next file is named quarantine"
+    s5_clue   = (
+        "Doctors isolate the infected using me. "
+        "Your antivirus sends suspicious files to me. "
+        "In 2020, returning travellers faced me at every border. "
+        "What am I? (Your answer is the name of your next file.)"
+    )
     s5_folder = rng.choice(folders)
     s5_path   = os.path.join(s5_folder, "payload.jpg")
 
@@ -511,7 +531,11 @@ if result == 55:
     # ----------------------------------------------------------------
     # STAGE 6 — quarantine.jpg — EXIF metadata (real JPEG + exiftool)
     # ----------------------------------------------------------------
-    s6_clue   = "the next file is named firewall"
+    s6_clue   = (
+        "I was named after what stops fire from spreading in buildings. "
+        "I sit at the edge of your network, deciding which packets get through and which get dropped. "
+        "What am I? (Your answer is the name of your next file.)"
+    )
     s6_folder = rng.choice(folders)
     s6_path   = os.path.join(s6_folder, "quarantine.jpg")
 
@@ -553,7 +577,12 @@ if result == 55:
     # ----------------------------------------------------------------
     # STAGE 7 — firewall.bf — Brainfuck (verified before writing)
     # ----------------------------------------------------------------
-    s7_target = "the next file is named oracle"
+    s7_target = (
+        "Ancient Greeks travelled to Delphi to hear my prophecies. "
+        "Today a trillion-dollar corporation shares my name "
+        "and dominates the enterprise database market. "
+        "What am I? (Your answer is the name of your next file.)"
+    )
     bf_code   = make_brainfuck_for_string(s7_target)
 
     bf_out = run_brainfuck(bf_code)

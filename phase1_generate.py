@@ -442,7 +442,11 @@ def main():
     # ----------------------------------------------------------------
     s6_folder = rng.choice(folders)
     s6_path, s6_ext, s6_cipher = write_rot13_clue(
-        s6_folder, "thanos", "the next file is named matrix", rng
+        s6_folder, "thanos",
+        "Rows and columns define my structure. Neo was trapped inside a digital one. "
+        "Mathematicians love to multiply me. What am I? "
+        "(Your answer is the name of your next file.)",
+        rng
     )
     decoys6 = place_decoy_clones("thanos", s6_folder, folders, rng,
                                   DECOY_CLONES_PER_CLUE)
@@ -450,7 +454,7 @@ def main():
         "STAGE 6  (ROT13)\n"
         f"  Clue file  : thanos{s6_ext}  (fake header)\n"
         f"  Full path  : {os.path.relpath(s6_path, abs_output)}\n"
-        f"  Plaintext  : the next file is named matrix\n"
+        f"  Plaintext  : [riddle — answer = matrix]\n"
         f"  Ciphertext : {s6_cipher}\n"
         f"  Decoys     : {[os.path.relpath(p, abs_output) for p in decoys6]}\n"
         f"  Answer     : matrix\n"
@@ -462,7 +466,12 @@ def main():
     # ----------------------------------------------------------------
     s7_folder = rng.choice(folders)
     s7_path, s7_ext, s7_encoded = write_base64_clue(
-        s7_folder, "matrix", "the next file is named algorithm", rng
+        s7_folder, "matrix",
+        "I am a precise, step-by-step set of instructions for solving a problem. "
+        "Every app, every search engine, and every AI model runs on me. "
+        "Without me, computers are just expensive rocks. What am I? "
+        "(Your answer is the name of your next file.)",
+        rng
     )
     decoys7 = place_decoy_clones("matrix", s7_folder, folders, rng,
                                   DECOY_CLONES_PER_CLUE)
@@ -470,7 +479,7 @@ def main():
         "STAGE 7  (base64)\n"
         f"  Clue file  : matrix{s7_ext}  (fake header)\n"
         f"  Full path  : {os.path.relpath(s7_path, abs_output)}\n"
-        f"  Plaintext  : the next file is named algorithm\n"
+        f"  Plaintext  : [riddle — answer = algorithm]\n"
         f"  Base64     : {s7_encoded}\n"
         f"  Decoys     : {[os.path.relpath(p, abs_output) for p in decoys7]}\n"
         f"  Answer     : algorithm\n"
