@@ -19,8 +19,8 @@ Key features:
   - Stages 1–3 remain plain .txt with no fake header (beginner-friendly).
 
 Produces:
-  - <OUTPUT_DIR>/participant_pack/   — folder given to each team
-  - <OUTPUT_DIR>/filehunt_phase1.zip — distributable zip (participant_pack only)
+  - <OUTPUT_DIR>/filehunt_phase1/    — folder given to each team
+  - <OUTPUT_DIR>/filehunt_phase1.zip — distributable zip (filehunt_phase1 folder)
   - <OUTPUT_DIR>/admin_answer_log.txt — base64-encoded answer key (DO NOT DISTRIBUTE)
 """
 
@@ -36,12 +36,12 @@ import tempfile
 # TUNABLE CONSTANTS
 # ---------------------------------------------------------------------------
 OUTPUT_DIR            = "phase1_output"
-NUM_FOLDERS           = 256       # decoy folders in the tree
-MAX_DEPTH             = 8         # max nesting depth
-NUM_NOISE_FILES       = 1024      # random junk files
+NUM_FOLDERS           = 512       # decoy folders in the tree
+MAX_DEPTH             = 32         # max nesting depth
+NUM_NOISE_FILES       = 10001      # random junk files
 MIN_FILE_SIZE         = 256       # bytes — min junk payload
 MAX_FILE_SIZE         = 2048      # bytes — max junk payload
-DECOY_CLONES_PER_CLUE = 3        # how many impostor copies of each clue to place
+DECOY_CLONES_PER_CLUE = 8        # how many impostor copies of each clue to place
 SEED                  = None      # int for reproducible output, None = random
 
 # ---------------------------------------------------------------------------
@@ -54,19 +54,24 @@ LIST1 = [
     "seethe", "malding", "mid", "peak", "goated", "ratio", "copium",
     "hopium", "doomer", "bloomer", "gremlin", "feral", "unc", "aura",
     "delulu", "mewing", "glazing", "slay", "no-cap", "lowkey", "highkey",
-    "sheesh", "sussy", "pog", "poggers", "vibe", "mr_poopy-butthole",
-    "poop", "black", "horny", "oyas", "rijo",
+    "sheesh", "sussy", "pog", "poggers", "vibe", "mr_poopy-butthole", 
+    "poop", "black", "horny", "oyas", "rijo", "programmer", "fileHunt",
+    "admin_stuffs" , "confidential" , "no_files_here", "answers", "passwords", 
+    "fsociety" , "fsociety", "fsociety", "MrRobot", "hidden_files" , "epstein",
+    "rick_sanchez", "existential", "gooch", "mama", "hood", "homie"
 ]
 
 LIST2 = [
     "mrbeast", "pewdiepie", "crypto", "nft", "tiktok", "youtube", "reddit",
     "discord", "twitch", "amongus", "minecraft", "fortnite", "roblox",
-    "spongebob", "shrek", "gigachad", "wojak", "pepe", "doge", "stonks",
-    "virgin", "rizzler", "toilet", "tax", "goon", "cave", "elmo", "shark",
-    "duck", "goblin", "wizard", "banana", "chair", "lettuce", "sandwich",
-    "grimace", "florida", "moth", "capybara", "dorito", "katana", "glizzy",
-    "mogger", "hamster", "waffle", "pickle", "nugget", "brainrot", "void",
+    "virgin", "rizzler", "kurup", "appy", "goon", "cave", "elmo", "battery_sir", "goth_mommy" , "feet", "corn", "nihilist"
+    "grimace", "florida", "moth", "capybara", "chandran", "katana", "glizzy", "elon_musk", "mars", "github", "tobby", "PRAWMATHEAN",
+    "mogger", "pickle_rick", "nugget", "brainrot", "void", "P_WAS_HERE",
     "swamp", "gooners", "alzheimers", "ragebaits", "clickbait", "fr",
+    "poop", "black", "horny", "oyas", "rijo", "programmer", "fileHunt",
+    "admin_stuffs" , "confidential" , "no_files_here", "answers", "passwords", 
+    "fsociety" , "fsociety", "fsociety", "MrRobot", "hidden_files" , "epstein",
+    "rick_sanchez", "existential", "gooch", "mama", "hood", "doomsday", "newMask_sameTask", "ripper"
 ]
 
 EXTENSIONS = [
@@ -318,7 +323,7 @@ def main():
     rng = random.Random(SEED)
 
     abs_output = os.path.abspath(OUTPUT_DIR)
-    pack_dir   = os.path.join(abs_output, "participant_pack")
+    pack_dir   = os.path.join(abs_output, "filehunt_phase1")
     os.makedirs(pack_dir, exist_ok=True)
 
     print("[1/5] Building folder tree ...")
@@ -337,14 +342,13 @@ def main():
     stage1_text = (
         'Welcome to the File Hunt!\n'
         '\n'
-        'The answer to each puzzle is the NAME (not extension) of the next file.\n'
-        'Files can have any extension — .jpg, .mp3, .pdf, etc.\n'
-        'Some files may need `cat` or `strings` to read.\n'
-        f'NOTE: Each clue file has {DECOY_CLONES_PER_CLUE} impostor copies with '
-        'the same name but junk inside.\n'
+        'Your Job is to solve all the riddles, decode/encode and find the maximum number of files as much as possible.\n'
+        'Files can have any extension — .jpg, .mp3, .pdf, etc. (funfact : extension or filetype doesnt matter)\n'
+        'TIP : use basic linux commands to view the file details, and the content inside it.\n'
+        'There might be decoys of the actual clue files. You\'re supposed to figure it out.\n'
         'Only ONE copy of each clue has real text — the rest are traps.\n'
         '\n'
-        '--- YOUR FIRST PUZZLE ---\n'
+        '--- YOUR FIRST Riddle ---\n'
         '\n'
         'I have keys but open no locks. I have space but no room.\n'
         "You can enter, but you can't go inside. What am I?\n"

@@ -22,20 +22,21 @@
 # CONFIGURATION — edit these before the event if anything changes
 # =============================================================================
 
-SERVER_IP="192.168.29.202"   # IP of the organiser's machine on the LAN
-SERVER_PORT="5566"            # Port python3 -m http.server is listening on
+SERVER_IP="172.40.0.143"   # IP of the organiser's machine on the LAN
+SERVER_PORT="8888"            # Port python3 -m http.server is listening on
 
 PHASE1_ZIP="filehunt_phase1.zip"   # Filename of the Phase 1 zip on the server
 PHASE2_ZIP="filehunt_phase2.zip"   # Filename of the Phase 2 zip on the server
 
-# The top-level folder name that the zip extracts into (don't change unless
-# you rename participant_pack inside the zip generator scripts).
-EXTRACTED_FOLDER="participant_pack"
+# Folder names inside the respective zip files
+PHASE1_FOLDER="filehunt_phase1"
+PHASE2_FOLDER="filehunt_phase2"
 
-# What to call the hidden folders on the Desktop after renaming.
-# Leading dot makes them hidden from GUI file managers and plain `ls`.
-PHASE1_HIDDEN=".filehunt_phase1"
-PHASE2_HIDDEN=".filehunt_phase2"
+# Destination folder names on Desktop:
+# Phase 1 is visible ("filehunt_phase1")
+# Phase 2 is hidden initially (".filehunt_phase2")
+PHASE1_DEST="filehunt_phase1"
+PHASE2_DEST=".filehunt_phase2"
 
 # Where to put everything. $HOME/Desktop works on standard Ubuntu.
 DESKTOP="$HOME/Desktop"
@@ -124,29 +125,29 @@ download() {
 
 setup_phase() {
     local zip_name="$1"        # e.g. filehunt_phase1.zip
-    local hidden_name="$2"     # e.g. .filehunt_phase1
-    local phase_label="$3"     # e.g. "Phase 1"
+    local extracted_name="$2"  # e.g. filehunt_phase1
+    local dest_name="$3"       # e.g. filehunt_phase1 or .filehunt_phase2
+    local phase_label="$4"     # e.g. "Phase 1"
 
     local url="${BASE_URL}/${zip_name}"
     local zip_dest="${DESKTOP}/${zip_name}"
-    local extracted="${DESKTOP}/${EXTRACTED_FOLDER}"
-    local final_dest="${DESKTOP}/${hidden_name}"
+    local extracted="${DESKTOP}/${extracted_name}"
+    local final_dest="${DESKTOP}/${dest_name}"
 
     echo -e "${BOLD}── $phase_label ─────────────────────────${RESET}"
 
     # Warn and clean up if a previous run left files behind
     if [[ -d "$final_dest" ]]; then
-        warn "Hidden folder '$final_dest' already exists — removing it first."
+        warn "Destination folder '$final_dest' already exists — removing it first."
         rm -rf "$final_dest"
+    fi
+    if [[ -d "$extracted" && "$extracted" != "$final_dest" ]]; then
+        warn "Stale extracted folder '$extracted' exists — removing it first."
+        rm -rf "$extracted"
     fi
     if [[ -f "$zip_dest" ]]; then
         warn "Zip '$zip_dest' already exists — removing it first."
         rm -f "$zip_dest"
-    fi
-    # The extraction landing zone (shared name from the zip) might also be stale
-    if [[ -d "$extracted" ]]; then
-        warn "Extraction folder '$extracted' already exists — removing it first."
-        rm -rf "$extracted"
     fi
 
     # 1. Download
@@ -167,15 +168,19 @@ setup_phase() {
     rm -f "$zip_dest"
     success "Deleted zip file."
 
-    # 4. Rename to a hidden dot-folder
-    mv "$extracted" "$final_dest" \
-      || die "$phase_label: failed to rename '$extracted' to '$final_dest'."
-    success "Renamed → $final_dest  (hidden)"
+    # 4. Rename to destination folder if needed (e.g. to hide Phase 2)
+    if [[ "$extracted" != "$final_dest" ]]; then
+        mv "$extracted" "$final_dest" \
+          || die "$phase_label: failed to rename '$extracted' to '$final_dest'."
+        success "Renamed → $final_dest (hidden)"
+    else
+        success "Kept visible at → $final_dest"
+    fi
 
     # Quick sanity check — count the files inside
     local file_count
     file_count=$(find "$final_dest" -type f | wc -l)
-    success "$phase_label ready — $file_count files inside '$hidden_name'"
+    success "$phase_label ready — $file_count files inside '$dest_name'"
     echo ""
 }
 
@@ -183,8 +188,8 @@ setup_phase() {
 # Run setup for both phases
 # =============================================================================
 
-setup_phase "$PHASE1_ZIP" "$PHASE1_HIDDEN" "Phase 1"
-setup_phase "$PHASE2_ZIP" "$PHASE2_HIDDEN" "Phase 2"
+setup_phase "$PHASE1_ZIP" "$PHASE1_FOLDER" "$PHASE1_DEST" "Phase 1"
+setup_phase "$PHASE2_ZIP" "$PHASE2_FOLDER" "$PHASE2_DEST" "Phase 2"
 
 # =============================================================================
 # Done
@@ -193,9 +198,9 @@ setup_phase "$PHASE2_ZIP" "$PHASE2_HIDDEN" "Phase 2"
 echo -e "${BOLD}────────────────────────────────────────${RESET}"
 echo -e "${GREEN}${BOLD}All done! Both packs are ready.${RESET}"
 echo ""
-echo -e "  Phase 1 (beginner)  →  ${CYAN}${DESKTOP}/${PHASE1_HIDDEN}${RESET}"
-echo -e "  Phase 2 (advanced)  →  ${CYAN}${DESKTOP}/${PHASE2_HIDDEN}${RESET}"
+echo -e "  Phase 1 (visible)   →  ${CYAN}${DESKTOP}/${PHASE1_DEST}${RESET}"
+echo -e "  Phase 2 (hidden)    →  ${CYAN}${DESKTOP}/${PHASE2_DEST}${RESET}"
 echo ""
-echo -e "  Reveal with:  ${YELLOW}ls -la ~/Desktop${RESET}"
-echo -e "  Enter Phase 1: ${YELLOW}cd ~/Desktop/${PHASE1_HIDDEN} && ls${RESET}"
+echo -e "  View hidden files: ${YELLOW}ls -la ~/Desktop${RESET}"
+echo -e "  Enter Phase 1:     ${YELLOW}cd ~/Desktop/${PHASE1_DEST} && ls${RESET}"
 echo ""

@@ -16,6 +16,8 @@ phase2_output/
 
 # Admin answer logs (safety net — must never be committed)
 admin_answer_log.txt
+setup
+setup.sh
 
 # =============================================================
 # Python

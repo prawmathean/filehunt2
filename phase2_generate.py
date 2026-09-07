@@ -22,7 +22,7 @@ Key features vs Phase 1:
   - ~3–4× bigger haystack than Phase 1.
 
 Produces:
-  - <OUTPUT_DIR>/participant_pack/
+  - <OUTPUT_DIR>/filehunt_phase2/
   - <OUTPUT_DIR>/filehunt_phase2.zip
   - <OUTPUT_DIR>/admin_answer_log.txt  (DO NOT DISTRIBUTE)
 """
@@ -41,13 +41,13 @@ from brainfuck_interpreter import run_brainfuck
 # TUNABLE CONSTANTS
 # ---------------------------------------------------------------------------
 OUTPUT_DIR            = "phase2_output"
-NUM_FOLDERS           = 512
-MAX_DEPTH             = 16
-NUM_NOISE_FILES       = 4500
+NUM_FOLDERS           = 1024
+MAX_DEPTH             = 32
+NUM_NOISE_FILES       = 40960
 MIN_FILE_SIZE         = 512
 MAX_FILE_SIZE         = 8192
-NUM_HAYSTACK          = 3000
-DECOY_CLONES_PER_CLUE = 3        # impostor copies per clue file
+NUM_HAYSTACK          = 4096
+DECOY_CLONES_PER_CLUE = 32     # impostor copies per clue file
 SEED                  = None
 
 # Path to the source JPEG used for Stage 5 (EXIF / ImageDescription clue).
@@ -59,17 +59,18 @@ GEEKS_JPG_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "geeks
 # Wordlists
 # ---------------------------------------------------------------------------
 LIST1 = [
-    "sixSeven", "gyat", "coy", "booby", "fanum", "sus", "goofy",
+    "sixSeven", "gyat", "coy", "booby", "goofy",
     "nineElvn", "based", "npc", "alpha", "beta", "karen", "boomer",
-    "zoomer", "yeet", "bruh", "cap", "bussin", "drip", "simp", "cope",
-    "seethe", "malding", "mid", "peak", "goated", "ratio", "copium",
-    "hopium", "doomer", "bloomer", "gremlin", "feral", "unc", "aura",
-    "delulu", "mewing", "glazing", "slay", "no-cap", "lowkey", "highkey",
     "sheesh", "sussy", "pog", "poggers", "vibe", "mr_poopy-butthole",
     "poop", "black", "horny", "oyas", "rijo",
     "rizz", "cooked", "locked-in", "edging", "looksmaxxing", "yapping",
     "blud", "fam", "schizo", "pick-me", "trad", "woke", "opp", "banger",
     "slaps", "valid", "tweaking", "zesty", "mogged", "yikes", "clutch",
+    "sheesh", "sussy", "pog", "poggers", "vibe", "mr_poopy-butthole", 
+    "poop", "black", "horny", "oyas", "rijo", "programmer", "fileHunt",
+    "admin_stuffs" , "confidential" , "no_files_here", "answers", "passwords", 
+    "fsociety" , "fsociety", "fsociety", "MrRobot", "hidden_files" , "epstein",
+    "rick_sanchez", "existential", "gooch", "mama", "hood", "homie"
 ]
 
 LIST2 = [
@@ -85,7 +86,17 @@ LIST2 = [
     "donkey", "twitter", "instagram", "tumblr", "linux", "debian",
     "kernel", "python", "javascript", "css", "html", "potato",
     "toaster", "giga", "soup", "bean", "gigachadette",
+    "virgin", "rizzler", "kurup", "appy", "goon", "cave", "elmo", "battery_sir", "goth_mommy" , "feet", "corn", "nihilist"
+    "grimace", "florida", "moth", "capybara", "chandran", "katana", "glizzy", "elon_musk", "mars", "github", "tobby", "PRAWMATHEAN",
+    "mogger", "pickle_rick", "nugget", "brainrot", "void", "P_WAS_HERE",
+    "swamp", "gooners", "alzheimers", "ragebaits", "clickbait", "fr",
+    "poop", "black", "horny", "oyas", "rijo", "programmer", "fileHunt",
+    "admin_stuffs" , "confidential" , "no_files_here", "answers", "passwords", 
+    "fsociety" , "fsociety", "fsociety", "MrRobot", "hidden_files" , "epstein",
+    "rick_sanchez", "existential", "gooch", "mama", "hood", "doomsday", "newMask_sameTask", "ripper"
 ]
+
+
 
 EXTENSIONS = [
     ".txt", ".dat", ".log", ".bin", ".cfg", ".tmp",
@@ -306,7 +317,7 @@ def main():
     rng = random.Random(SEED)
 
     abs_output = os.path.abspath(OUTPUT_DIR)
-    pack_dir   = os.path.join(abs_output, "participant_pack")
+    pack_dir   = os.path.join(abs_output, "filehunt_phase2")
     os.makedirs(pack_dir, exist_ok=True)
 
     print("[1/6] Building folder tree ...")
