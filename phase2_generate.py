@@ -50,6 +50,11 @@ NUM_HAYSTACK          = 3000
 DECOY_CLONES_PER_CLUE = 3        # impostor copies per clue file
 SEED                  = None
 
+# Path to the source JPEG used for Stage 5 (EXIF / ImageDescription clue).
+# Must be a real JPEG that exiftool can process.  Keep it in the same directory
+# as this script, or provide an absolute path.
+GEEKS_JPG_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "geeks.jpg")
+
 # ---------------------------------------------------------------------------
 # Wordlists
 # ---------------------------------------------------------------------------
@@ -440,23 +445,64 @@ if result == 55:
     )
 
     # ----------------------------------------------------------------
-    # STAGE 5 — payload.jpg — polyglot (JPEG magic + plain ASCII)
-    # This stage IS the disguise — the header trick is the puzzle itself.
+    # STAGE 5 — payload.jpg — real photo with clue in EXIF ImageDescription
+    #
+    # geeks.jpg is copied into the pack as "payload.jpg".
+    # The clue is embedded in the EXIF ImageDescription field via exiftool.
+    # Participants run:  exiftool payload.jpg
+    # and read the ImageDescription (or Description) field.
+    #
+    # Fallback: if exiftool is unavailable at generation time, the clue
+    # text is appended after the JPEG EOI marker so `strings` still finds it.
     # ----------------------------------------------------------------
-    s5_text   = "the next file is named quarantine"
+    s5_clue   = "the next file is named quarantine"
     s5_folder = rng.choice(folders)
     s5_path   = os.path.join(s5_folder, "payload.jpg")
-    with open(s5_path, 'wb') as fh:
-        fh.write(b"\xFF\xD8\xFF\xE0")
-        fh.write(s5_text.encode('ascii'))
+
+    # Verify source image exists before we start
+    if not os.path.isfile(GEEKS_JPG_PATH):
+        raise RuntimeError(
+            f"Stage 5: source image not found: {GEEKS_JPG_PATH}\n"
+            "Make sure geeks.jpg is in the same directory as phase2_generate.py."
+        )
+
+    # Copy geeks.jpg → payload.jpg (keeps the original untouched)
+    import shutil as _shutil
+    _shutil.copy2(GEEKS_JPG_PATH, s5_path)
+
+    # Embed the clue in the EXIF ImageDescription field
+    s5_exiftool_ok = False
+    try:
+        r5 = subprocess.run(
+            [
+                "exiftool",
+                f"-ImageDescription={s5_clue}",
+                "-overwrite_original",
+                s5_path,
+            ],
+            capture_output=True, text=True, timeout=30,
+        )
+        s5_exiftool_ok = (r5.returncode == 0 and os.path.isfile(s5_path))
+    except (FileNotFoundError, subprocess.TimeoutExpired):
+        pass
+
+    if not s5_exiftool_ok:
+        # Fallback: append after EOI so `strings` finds it
+        with open(s5_path, 'ab') as fh:
+            fh.write(b"\n" + s5_clue.encode('utf-8') + b"\n")
+
+    s5_embed = "EXIF ImageDescription via exiftool" if s5_exiftool_ok else "appended after EOI (fallback)"
+
     decoys5 = place_decoy_clones("payload", s5_folder, folders, rng,
                                   DECOY_CLONES_PER_CLUE)
     log_entries.append(
-        "STAGE 5  (polyglot JPEG magic + ASCII)\n"
-        f"  Clue file    : payload.jpg\n"
+        "STAGE 5  (real JPEG — EXIF ImageDescription)\n"
+        f"  Clue file    : payload.jpg  (geeks.jpg copy)\n"
         f"  Full path    : {os.path.relpath(s5_path, abs_output)}\n"
-        f"  First 4 B    : \\xFF\\xD8\\xFF\\xE0 then plain ASCII\n"
-        f"  Read with    : strings payload.jpg  OR  cat payload.jpg\n"
+        f"  Embed method : {s5_embed}\n"
+        f"  Hidden text  : {s5_clue}\n"
+        f"  Read with    : exiftool payload.jpg\n"
+        f"  Field name   : ImageDescription (or 'Description' in short output)\n"
         f"  Decoys       : {[os.path.relpath(p, abs_output) for p in decoys5]}\n"
         f"  Answer       : quarantine\n"
         f"  Next file    : quarantine  (any extension)"

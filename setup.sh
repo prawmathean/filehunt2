@@ -84,6 +84,18 @@ info "Using downloader: $DOWNLOADER"
 # Check that unzip is available
 command -v unzip &>/dev/null || die "unzip is not installed. Run: sudo apt install unzip"
 
+# ---------------------------------------------------------------------------
+# Install exiftool if missing  (required by Phase 2 participants)
+# ---------------------------------------------------------------------------
+if ! command -v exiftool &>/dev/null; then
+    info "exiftool not found — installing via apt ..."
+    sudo apt-get install -y libimage-exiftool-perl &>/dev/null \
+      && success "exiftool installed." \
+      || warn "Could not install exiftool automatically. Run: sudo apt install libimage-exiftool-perl"
+else
+    success "exiftool already installed ($(exiftool -ver))."
+fi
+
 echo ""
 
 # =============================================================================
