@@ -35,7 +35,7 @@ The recommended way to run and distribute the challenge is using Docker. It prov
 
 *(Optional: Run `sudo usermod -aG docker $USER` and log back in to use `docker` without `sudo`)*
 
-### 1. Play the Game (Participants)
+### 1. To try it (Run the docker instance) : 
 Open a terminal on your Linux machine and run:
 ```bash
 sudo docker run --rm -it praw56/filehunt
