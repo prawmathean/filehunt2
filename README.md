@@ -6,41 +6,51 @@ Participants must use standard Linux CLI tools (`find`, `grep`, `cat`, `strings`
 
 ---
 
-## 📖 Documentation
-
-To keep this minimal, the full documentation is split into three guides:
-
-1. [**Mechanics & Customization**](docs/MECHANICS.md) — How the game generates decoys, fake headers, and noise, plus how to tune the difficulty.
-2. [**Stage Breakdowns**](docs/STAGES.md) — Exact solutions, riddles, and mechanics for all 8 stages of Phase 1 and Phase 2.
-3. [**Admin Guide & Checklist**](docs/ADMIN_GUIDE.md) — Event-day checklist, how to decode the admin answer logs, and FAQs.
-
----
 
 ## 🚀 Quick Start (Docker)
 
-The easiest way to distribute the game is using the provided Docker container. It comes pre-loaded with both puzzle phases and all necessary CLI tools, completely isolating the participants.
+The recommended way to run and distribute the challenge is using Docker. It provides a complete, isolated Linux environment with all puzzle phases and tools pre-configured.
 
-### 1. Build and push the image (Organizers)
+> **Requirements:** A Linux machine (Ubuntu, Debian, Arch, Fedora, etc.) with Docker installed.
+
+### Installing Docker (if needed)
+
+- **Ubuntu / Debian:**
+  ```bash
+  sudo apt update && sudo apt install -y docker.io
+  sudo systemctl enable --now docker
+  ```
+
+- **Arch Linux:**
+  ```bash
+  sudo pacman -S docker
+  sudo systemctl enable --now docker
+  ```
+
+- **Fedora:**
+  ```bash
+  sudo dnf install -y docker
+  sudo systemctl enable --now docker
+  ```
+
+*(Optional: Run `sudo usermod -aG docker $USER` and log back in to use `docker` without `sudo`)*
+
+### 1. Play the Game (Participants)
+Open a terminal on your Linux machine and run:
 ```bash
-# Generate the latest random puzzle packs
+sudo docker run --rm -it praw56/filehunt
+```
+Docker will pull the image and drop you directly into an interactive bash shell with the puzzle packs ready.
+
+---
+
+### 2. How to Build it yourselves
+If you want to regenerate packs with fresh seeds _(generate the files all by yourself)_
+
+```bash
 python3 phase1_generate.py
 python3 phase2_generate.py
-
-# Build the Docker image (replace 'yourname' with your Docker Hub username)
-sudo docker build -t yourname/filehunt .
-
-# Push to the cloud
-sudo docker push yourname/filehunt
 ```
-
-### 2. Play the game (Participants)
-On the day of the event, tell teams to open a terminal and run:
-```bash
-sudo docker run --rm -it yourname/filehunt
-```
-They will be dropped directly into a custom, colored bash prompt with both phases ready to explore!
-
-*(Note: If your event has zero internet access, see the [Admin Guide](docs/ADMIN_GUIDE.md) for offline USB Docker distribution).*
 
 ---
 
@@ -53,6 +63,23 @@ They will be dropped directly into a custom, colored bash prompt with both phase
 ├── haystack_generator.py      # Used by Phase 2 for the final haystack stage
 ├── brainfuck_interpreter.py   # Used by Phase 2 for the esoteric cipher stage
 ├── Dockerfile                 # Packages the event for participants
-├── docs/                      # Extensive guides and documentation
-└── setup.sh                   # Legacy script for non-Docker LAN deployments
+├── docs/                      # Detailed documentation
+└── setup.sh                   # Script for non-Docker LAN deployments
 ```
+
+---
+## 📖 Documentation
+
+To keep things organized and minimal, the full documentation is split into three guides:
+
+1. [**Mechanics & Customization**](docs/MECHANICS.md) — How the game generates decoys, fake headers, and noise, plus how to tune the difficulty.
+2. [**Stage Breakdowns**](docs/STAGES.md) — Exact solutions, riddles, and mechanics for all 8 stages of Phase 1 and Phase 2.
+3. [**Admin Guide & Checklist**](docs/ADMIN_GUIDE.md) — Event-day checklist, how to decode the admin answer logs, and FAQs.
+
+---
+
+## ☕ Support the Developer
+
+If you find this project fun or useful for your events, consider supporting the dev:
+
+- [prajwal-56.github.io](https://prajwal-56.github.io/donate)

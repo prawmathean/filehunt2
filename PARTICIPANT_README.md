@@ -1,17 +1,15 @@
-# 🚩 Linux File Hunt 
+🚩 FILE HUNT 2.0
 
-## 🛠️ Essential Commands 
+WHAT TO DO:
+You are placed in a Linux environment containing thousands of decoy files and
+hidden clue files organized across many folders.
+Your objective is to follow a chain of clues, solve riddles and ciphers, and reach the final stage.
 
-| Task | Command | Description |
-| :--- | :--- | :--- |
-| **Locate a file** | `find . -name "filename.*"` | Finds all files matching the name across all subfolders |
-| **View file content** | `cat filename.txt` | Dumps content to terminal |
-| **Inspect metadata** | `exiftool image.jpg` | Reads EXIF tags (Description, Comments, etc.) |
-| **Decode Base64** | `echo "<string>" \| base64 -d` | Decodes a Base64 string |
-| **Decode ROT13** | `echo "<text>" \| tr 'A-Za-z' 'N-ZA-Mn-za-m'` | Decodes ROT13 cipher |
-| **Run Python script** | `python3 script.py` | Runs a Python file |
-| **Extract password zip** | `unzip -P <password> file.zip` | Unzips protected archive using password |
-| **ls files/folders** | `ls ` | Displays files & folders  |
-| **View hidden files/folders** | `ls -la` | Displays hidden files (starting with `.`) |
-| **change current directory** | `cd dir_name` | change current directory  |
----
+TIPS:
+  - Search the folder tree to find your next clue.
+  - Watch out for decoy clones and fake file extensions.
+  - If a file won't open normally, try commands like `cat` or `strings`.
+
+START:
+  cd ~/filehunt_phase1
+  cat START_HERE.txt
