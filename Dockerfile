@@ -20,10 +20,11 @@ FROM ubuntu:22.04
 ENV DEBIAN_FRONTEND=noninteractive
 
 # ---------------------------------------------------------------------------
-# Install all tools participants need
+# Install all tools participants need + networking & utilities
 # ---------------------------------------------------------------------------
 RUN apt-get update && apt-get install -y \
     python3 \
+    python3-pip \
     unzip \
     libimage-exiftool-perl \
     binutils \
@@ -33,12 +34,22 @@ RUN apt-get update && apt-get install -y \
     less \
     grep \
     findutils \
+    sudo \
+    iproute2 \
+    net-tools \
+    iputils-ping \
+    curl \
+    wget \
+    dnsutils \
+    tree \
     && rm -rf /var/lib/apt/lists/*
 
 # ---------------------------------------------------------------------------
-# Create a non-root participant user
+# Create player user with passwordless sudo rights
 # ---------------------------------------------------------------------------
-RUN useradd -m -s /bin/bash player
+RUN useradd -m -s /bin/bash player \
+    && usermod -aG sudo player \
+    && echo "player ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
 # ---------------------------------------------------------------------------
 # Copy the Brainfuck interpreter — accessible from anywhere as:
@@ -71,7 +82,7 @@ RUN echo ''                                                             >> /home
  && echo 'echo "  Start here     : ls ~/filehunt_phase1/           "'   >> /home/player/.bashrc \
  && echo 'echo "=================================================="'   >> /home/player/.bashrc \
  && echo 'echo ""'                                                      >> /home/player/.bashrc \
- && echo "export PS1='\[\033[1;36m\][FileHunt2]\[\033[0m\] \[\033[1;32m\]player0\[\033[0m\]:\[\033[1;33m\]\w\[\033[0m\]$ '" >> /home/player/.bashrc
+ && echo "export PS1='\[\033[1;32m\]player@filehunt\[\033[0m\]:\[\033[1;34m\]\w\[\033[0m\]\$ '" >> /home/player/.bashrc
 
 # ---------------------------------------------------------------------------
 # Fix ownership of everything in home
